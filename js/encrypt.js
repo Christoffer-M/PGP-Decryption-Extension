@@ -4,6 +4,7 @@ $("#encryptTest").on('click', async () => {
     rsaBits: 2048,                                              // RSA key size
     passphrase: '123456789'          // protects the private key
   });
+  
   let values = Object.values(key);
 
   const publicKeyArmored = values[2];

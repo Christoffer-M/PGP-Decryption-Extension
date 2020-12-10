@@ -7,8 +7,8 @@
             height: 500px;
       }
       button {
-        height: 50px;
-        width: 150px;
+        height: 40px;
+        width: 100px;
         outline: none;
       }
       input {
@@ -17,13 +17,11 @@
         margin-right: 15px;
         margin-top: 50px;
       }
-      .decrypt {
-        margin-top: 10px;
-        width: 150px;
-        height: 35px;
+      .lowerbuttons{
+        margin-top:10px;
       }
     </style>
-    <script src="../js/jquery-3.5.1.min.js"></script>
+  <script src="../js/jquery-3.5.1.min.js"></script>
   <script src="../js/openpgp.min.js" defer></script>
   <script src="../js/encrypt.js" defer></script>
   <script src="../js/background.js" defer></script>
@@ -35,8 +33,11 @@
     <button id="htmlGrabber">Get HTML</button>
     <input placeholder="Private Key"></input>
     <input placeholder="Message to Decrypt"></input>
-    <button class="decrypt">Decrypt Message</button>
-    <button id="encryptTest">Test</button>
+    <div class="lowerbuttons">
+      <button class="decrypt">Decrypt Message</button>
+      <button id="encryptTest">Test</button>
+    </div>
+
   </body>
 
 </html>
