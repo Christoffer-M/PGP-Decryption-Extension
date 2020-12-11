@@ -151,7 +151,7 @@ $(async function () {
             code: "var config = " + JSON.stringify(messages),
           },
           function () {
-            chrome.tabs.executeScript({ file: "script.js" });
+            chrome.tabs.executeScript({ file: "htmlChanger.js" });
           }
         );
       }
