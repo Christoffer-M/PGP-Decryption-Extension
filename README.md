@@ -7,3 +7,5 @@ To run this extension do the following:
 3. Download and unzip this repository
 4. Take the unzipped folder and upload it through the "Load Unpacked" button
 5. Done!
+
+You can generate a key pair here: https://pgpkeygen.com/
