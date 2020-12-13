@@ -3,8 +3,8 @@
   <head>
     <style>
       body {
-            width: 450px;
-            height: 500px;
+        width: 450px;
+        height: 500px;
       }
       button {
         height: 40px;
@@ -20,15 +20,13 @@
       #encryptedmessage {
         margin-top: 10px;
         height: 200px;
-        
       }
       #decryptedmessage {
         margin-top: 10px;
         height: 200px;
-        
       }
-      .lowerbuttons{
-        margin-top:10px;
+      .lowerbuttons {
+        margin-top: 10px;
         width: 100%;
       }
       .container {
@@ -41,7 +39,7 @@
         width: 100%;
         resize: none;
       }
-      .hide{
+      .hide {
         display: none;
       }
       .errortext {
@@ -54,46 +52,66 @@
         color: red;
       }
 
-      .green-color{
-        color:green;
+      .green-color {
+        color: green;
       }
     </style>
-  <script src="../js/jquery-3.5.1.min.js"></script>
-  <script src="../js/openpgp.min.js" defer></script>
-  <script src="../js/encrypt.js" defer></script>
-  <script src="../js/background.js" defer></script>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script src="../js/openpgp.min.js" defer></script>
+    <script src="../js/encrypt.js" defer></script>
+    <script src="../js/background.js" defer></script>
   </head>
   <body>
     <h1>AIS PGP Exam Encryption</h1>
-    <textarea id="publickeyscanner" placeholder="Public Key to Scan page" class="keyarea"></textarea>
+    <textarea
+      id="publickeyscanner"
+      placeholder="Public Key to Scan page"
+      class="keyarea"
+    ></textarea>
+    <p id="scantext" class="hide errortext"></p>
     <button id="htmlGrabber">Scan Page</button>
-  
+
     <div class="lowerbuttons">
-      
       <div class="container">
-        
         <h2>Sign Message</h2>
-        <textarea id="privateKey" placeholder="Your Private Key" class="keyarea"></textarea>
-        <textarea id="passphrase" placeholder="Your Password for Private Key"></textarea>
-        <p id="errortext" class="hide errortext">Please fill out all the fields</p>
+        <textarea
+          id="privateKey"
+          placeholder="Your Private Key"
+          class="keyarea"
+        ></textarea>
+        <textarea
+          id="passphrase"
+          placeholder="Your Password for Private Key"
+        ></textarea>
+        <p id="errortext" class="hide errortext">
+          Please fill out all the fields
+        </p>
         <p id="passworderror" class="hide errortext"></p>
-        <textarea id="encryptedmessage" type="text"></textarea>
+        <textarea
+          id="encryptedmessage"
+          type="text"
+          placeholder="Message you wish to encrypt"
+        ></textarea>
         <button id="encrypt">Sign Message</button>
       </div>
-      
+
       <div class="container2">
-        
         <h2>Verify Message</h2>
-        <textarea id="pubkeyverify" placeholder="Public Key" class="keyarea"></textarea>
-        <textarea id="decryptedmessage"></textarea>
-        <p id="errortextpubkey" class="hide errortext">Please fill out the public key & Message field!</p>
+        <textarea
+          id="pubkeyverify"
+          placeholder="Public Key"
+          class="keyarea"
+        ></textarea>
+        <textarea
+          id="decryptedmessage"
+          placeholder="Encrypted message you wish to verify"
+        ></textarea>
+        <p id="errortextpubkey" class="hide errortext">
+          Please fill out the public key & Message field!
+        </p>
         <p id="verifyresult" class="hide"></p>
         <button id="decrypt">Verify Message</button>
       </div>
-      
-     
     </div>
-
   </body>
-
 </html>

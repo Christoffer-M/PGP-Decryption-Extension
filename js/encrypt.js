@@ -88,7 +88,6 @@ $(async function () {
     console.log("Popup DOM fully loaded and parsed");
 
     var encryptedMessages = [];
-    var decryptedMessage = "";
     const pubkey = document.getElementById("publickeyscanner").value;
 
     if (pubkey !== "") {
@@ -97,7 +96,19 @@ $(async function () {
         { file: "encGrabber.js" },
         function (result) {
           encryptedMessages = result[0];
-          decrypt();
+          console.log(encryptedMessages);
+          console.log(result[0]);
+          const text = document.getElementById("scantext");
+          if (encryptedMessages === null) {
+            text.innerHTML =
+              "Could not find any Encrypted messages on this page.";
+            text.classList.remove("hide");
+          } else {
+            if (!text.classList.contains("hide")) {
+              text.classList.add("hide");
+            }
+            decrypt();
+          }
         }
       );
 
@@ -128,17 +139,19 @@ $(async function () {
         for (const iterator of updatedValues) {
           console.log(iterator);
         }
-        updatePage(updatedValues, values);
+        updatePage(updatedValues, values, encryptedMessages);
       }
 
-      function updatePage(messages, values) {
+      function updatePage(messages, values, encmess) {
         chrome.tabs.executeScript(
           {
             code:
               "var config = " +
               JSON.stringify(messages) +
               "; var value = " +
-              JSON.stringify(values),
+              JSON.stringify(values) +
+              "; var encmess = " +
+              JSON.stringify(encmess),
           },
           function () {
             chrome.tabs.executeScript({ file: "htmlChanger.js" });
