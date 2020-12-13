@@ -1,9 +1,6 @@
 const regex101 = /(\w+|\d+|\s+)+(,\s*\d+)*/gm;
 var messages = config.toString().match(regex101);
-messages = messages.reverse();
 var values = value;
-values = values.reverse();
-
 var editedmessages = [];
 
 const regex = /(((-----BEGIN PGP SIGNED MESSAGE-----)(\n.*?)*)(-----END PGP SIGNATURE-----))+/gm;
@@ -21,7 +18,7 @@ for (let index = 0; index < messages.length; index++) {
 }
 
 var markup = document.documentElement.innerHTML;
-for (let index = 0; index < 2; index++) {
+for (let index = 0; index < editedmessages.length; index++) {
   let correctMatch = "";
   let currentIndex = 0;
   for (let index = 0; index < all.length; index++) {
@@ -37,5 +34,7 @@ for (let index = 0; index < 2; index++) {
     }
   }
   correctMatch = correctMatch.replace(regex, editedmessages.pop());
+  console.log(correctMatch);
+  console.log(all[currentIndex]);
   all[currentIndex].innerHTML = correctMatch;
 }
