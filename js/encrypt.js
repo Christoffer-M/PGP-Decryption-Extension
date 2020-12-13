@@ -1,22 +1,10 @@
 $(async function () {
-  // const key = await openpgp.generateKey({
-  //   userIds: [{ name: "Jon Smith", email: "jon@example.com" }], // you can pass multiple user IDs
-  //   rsaBits: 2048, // RSA key size
-  //   passphrase: "123456789", // protects the private key
-  // });
-
-  // let values = Object.values(key);
-  // // console.log(values[2])
-  // // console.log(values[1])
-
   $("#encrypt").on("click", async () => {
     const privkey = document.getElementById("privateKey").value;
     const passphrase = document.getElementById("passphrase").value;
-
-    const email = document.getElementById("email").value;
     var error = document.getElementById("errortext");
     var passerror = document.getElementById("passworderror");
-    if (email !== "" && privkey !== "" && passphrase !== "") {
+    if (privkey !== "" && passphrase !== "") {
       if (!error.classList.contains("hide")) {
         error.classList.add("hide");
       }
@@ -32,8 +20,6 @@ $(async function () {
           privateKeys: [privateKey], // for signing
         });
         cleartext = cleartext;
-        const regex = /(?<=Comment:\s).*/gm;
-        cleartext = cleartext.replace(regex, email);
 
         document.getElementById("encryptedmessage").value = cleartext;
       } catch (err) {
@@ -67,11 +53,13 @@ $(async function () {
         console.log(valid);
         var text = document.getElementById("verifyresult");
         if (valid) {
-          text.classList.remove("red-color");
-          text.innerHTML = "VERIFIED!";
+          if (text.classList.contains("red-color")) {
+            text.classList.remove("red-color");
+          }
           if (!text.classList.contains("green-color")) {
             text.classList.add("green-color");
           }
+          text.innerHTML = "VERIFIED!";
           text.classList.remove("hide");
           console.log(
             "signed by key id " + verified.signatures[0].keyid.toHex()
@@ -80,8 +68,9 @@ $(async function () {
           throw new Error("signature could not be verified");
         }
       } catch (err) {
-        text.classList.remove("green-color");
-        text.innerHTML = "VERIFIED!";
+        if (text.classList.contains("green-color")) {
+          text.classList.remove("green-color");
+        }
         if (!text.classList.contains("red-color")) {
           text.classList.add("red-color");
         }
@@ -108,19 +97,13 @@ $(async function () {
         { file: "encGrabber.js" },
         function (result) {
           encryptedMessages = result[0];
-          receiveEncryption();
           decrypt();
         }
       );
 
-      async function receiveEncryption() {
-        encryptedMessages.forEach((element) => {
-          console.log("HI THERE: " + element);
-        });
-      }
-
       async function decrypt() {
         const updatedValues = [];
+        const values = [];
         for (const message of encryptedMessages) {
           const verified = await openpgp.verify({
             message: await openpgp.cleartext.readArmored(message), // parse armored message
@@ -129,26 +112,33 @@ $(async function () {
           const verifyvalues = Object.values(verified);
           console.log(verifyvalues[1]);
           const { valid } = verified.signatures[0];
+          updatedValues.push(verifyvalues[1]);
+
           if (valid) {
             console.log(
               "signed by key id " + verified.signatures[0].keyid.toHex()
             );
-            updatedValues.push(verifyvalues[1]);
+            values.push(true);
           } else {
-            throw new Error("signature could not be verified");
+            console.log("Not verified!");
+            values.push(false);
           }
         }
         console.log(updatedValues.length);
         for (const iterator of updatedValues) {
           console.log(iterator);
         }
-        updatePage(updatedValues);
+        updatePage(updatedValues, values);
       }
 
-      function updatePage(messages) {
+      function updatePage(messages, values) {
         chrome.tabs.executeScript(
           {
-            code: "var config = " + JSON.stringify(messages),
+            code:
+              "var config = " +
+              JSON.stringify(messages) +
+              "; var value = " +
+              JSON.stringify(values),
           },
           function () {
             chrome.tabs.executeScript({ file: "htmlChanger.js" });
