@@ -136,7 +136,7 @@ $(async function () {
               /((Hash: SHA512)((\n.*?)*))(-----BEGIN PGP SIGNATURE-----)/gm;
             const res = regex.exec(message);
             values.push(false);
-            updatedValues.push(res[3].trim() + "- SHA not valid!");
+            updatedValues.push(res[3].trim() + " - SHA not valid!");
           }
         }
         updatePage(updatedValues, values, encryptedMessages);
