@@ -1,16 +1,20 @@
 {
-    "name": "AIS Decryption Extensions",
-    "version": "1.0",
-    "options_page": "./html/options.html",
-    "description": "Build an Extension!",
-    "permissions": ["activeTab", "declarativeContent", "storage", "<all_urls>"],
-    "background": {
-        "scripts": ["js/background.js", "js/jquery-3.5.1.min.js", "js/openpgp.min.js"],
-        "persistent": false
-      },
-      "browser_action": {
-        "default_title": "Popup", 
-        "default_popup": "./html/popup.html"
-    },
-    "manifest_version": 2
+  "name": "PGP Decryption Extension",
+  "version": "1.0",
+  "options_page": "./html/options.html",
+  "description": "Build an Extension!",
+  "permissions": ["activeTab", "declarativeContent", "storage", "<all_urls>"],
+  "background": {
+    "scripts": [
+      "js/background.js",
+      "js/jquery-3.5.1.min.js",
+      "js/openpgp.min.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_title": "Popup",
+    "default_popup": "./html/popup.html"
+  },
+  "manifest_version": 2
 }
