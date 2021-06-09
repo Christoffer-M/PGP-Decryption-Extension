@@ -23,7 +23,7 @@ $(async function () {
 
         document.getElementById("encryptedmessage").value = cleartext;
       } catch (err) {
-        console.log(err);
+        console.error(err);
         passerror.innerHTML = err;
         passerror.classList.remove("hide");
       }
@@ -48,10 +48,8 @@ $(async function () {
         let verifyvalues = Object.values(verified);
 
         document.getElementById("decryptedmessage").value = verifyvalues[1];
-        console.log(verified.signatures[0]);
         const { valid } = verified.signatures[0];
-        console.log(valid);
-        var text = document.getElementById("verifyresult");
+        const text = document.getElementById("verifyresult");
         if (valid) {
           if (text.classList.contains("red-color")) {
             text.classList.remove("red-color");
@@ -68,6 +66,7 @@ $(async function () {
           throw new Error("signature could not be verified");
         }
       } catch (err) {
+        const text = document.getElementById("verifyresult");
         if (text.classList.contains("green-color")) {
           text.classList.remove("green-color");
         }
@@ -77,7 +76,7 @@ $(async function () {
         text.classList.remove("hide");
 
         text.innerHTML = "NOT VERIFIED! BE CAREFUL!";
-        console.log("ERROR: " + err);
+        console.error(err);
       }
     } else {
       error.classList.remove("hide");
@@ -96,8 +95,6 @@ $(async function () {
         { file: "encGrabber.js" },
         function (result) {
           encryptedMessages = result[0];
-          console.log(encryptedMessages);
-          console.log(result[0]);
           const text = document.getElementById("scantext");
           if (encryptedMessages === null) {
             text.innerHTML =
@@ -116,28 +113,31 @@ $(async function () {
         const updatedValues = [];
         const values = [];
         for (const message of encryptedMessages) {
-          const verified = await openpgp.verify({
-            message: await openpgp.cleartext.readArmored(message), // parse armored message
-            publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification
-          });
-          const verifyvalues = Object.values(verified);
-          console.log(verifyvalues[1]);
-          const { valid } = verified.signatures[0];
-          updatedValues.push(verifyvalues[1]);
+          try {
+            const verified = await openpgp.verify({
+              message: await openpgp.cleartext.readArmored(message), // parse armored message
+              publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification
+            });
+            const verifyvalues = Object.values(verified);
+            const { valid } = verified.signatures[0];
+            updatedValues.push(verifyvalues[1]);
 
-          if (valid) {
-            console.log(
-              "signed by key id " + verified.signatures[0].keyid.toHex()
-            );
-            values.push(true);
-          } else {
-            console.log("Not verified!");
+            if (valid) {
+              console.log(
+                "signed by key id " + verified.signatures[0].keyid.toHex()
+              );
+              values.push(true);
+            } else {
+              values.push(false);
+            }
+          } catch (error) {
+            console.error(error);
+            const regex =
+              /((Hash: SHA512)((\n.*?)*))(-----BEGIN PGP SIGNATURE-----)/gm;
+            const res = regex.exec(message);
             values.push(false);
+            updatedValues.push(res[3].trim() + "- SHA not valid!");
           }
-        }
-        console.log(updatedValues.length);
-        for (const iterator of updatedValues) {
-          console.log(iterator);
         }
         updatePage(updatedValues, values, encryptedMessages);
       }
