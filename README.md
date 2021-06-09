@@ -1,6 +1,6 @@
 ﻿# PGP-Decryption-Extension
 
-This is a simple Chromium extension made purely for the Applied Information Security Exam and as a proof of concept.
+This is a Chromium Extension made for the EuroSec Conference as a proof of concept.
 
 To run this extension do the following:
 
