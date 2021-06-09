@@ -1,5 +1,5 @@
 {
-  "name": "PGP Decryption Extension",
+  "name": "PGP Verification Extension",
   "version": "1.0",
   "options_page": "./html/options.html",
   "description": "Build an Extension!",
